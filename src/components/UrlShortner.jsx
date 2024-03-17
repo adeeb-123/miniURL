@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import axios from "axios";
+import { apiConnector } from "../utils/apiConnector";
+import { BASE_URL, ShortURL_API } from "../utils/apis"
 
 const UrlShortner = () => {
   const textRef = useRef();
@@ -12,14 +14,17 @@ const UrlShortner = () => {
 
   // function to shorten-url
   const shortenUrl = async () => {
-    if(longURL===""){
+    if (longURL === "") {
       toast.error("It Can't be Empty")
-      return ;
+      return;
     }
-    const response = await fetch(
-      `https://tinyurl.com/api-create.php?url=${longURL}`
-    );
-    setShortURL(await response.text());
+    const response = await apiConnector({
+      method: 'POST',
+      url: ShortURL_API.Create_ShortURL,
+      bodyData: { longURL }
+    })
+    setShortURL(BASE_URL + '/url/' + response.data.shortURL)
+    console.log(BASE_URL + '/url/' + response.data.shortURL)
   };
 
   const copyToClipboard = () => {
@@ -51,7 +56,7 @@ const UrlShortner = () => {
       {/* short url div */}
       {shortURL != "" ? (
         <div className="mt-8 flex items-center justify-between gap-4 px-4 py-2">
-          <p className="border p-2 rounded-lg" ref={textRef}>
+          <p className="border py-4 px-8 rounded-lg" ref={textRef}>
             {shortURL}
           </p>
 

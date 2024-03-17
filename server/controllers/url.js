@@ -1,19 +1,19 @@
-import { nanoid } from "nanoid";
+const shortid = require('shortid');
 const URL = require("../models/url");
 
 async function handleGenerateShortURL(req, res) {
-  const { url } = req.body;
+  const body = req.body;
 
-  if (!url) {
+  if (!body.longURL) {
     return res.status(400).json({
       msg: "URL is required",
     });
   }
 
-  const shortID = nanoid(8);
+  const shortID = shortid();
   await URL.create({
     shortId: shortID,
-    redirectURL: url,
+    redirectURL: body.longURL,
     visitHistory: [],
   });
 
@@ -23,6 +23,42 @@ async function handleGenerateShortURL(req, res) {
   });
 }
 
+async function handleRedirectRoute(req, res) {
+  const shortId = req.params.shortId
+  const entry = await URL.findOneAndUpdate({
+    shortId
+  }, {
+    $push: {
+      visitHistory: {
+        timestamp: Date.now()
+      }
+    }
+  })
+  if (!entry) {
+    return res.status(400).json({
+      msg: "Invalid Short URL"
+    })
+  }
+  res.redirect(entry.redirectURL)
+}
+
+async function handleAnalytics(req, res) {
+  const shortId = req.params.shortId
+
+  const result = await URL.findOne({ shortId: shortId })
+  if (!result) {
+    return res.status(400).json({
+      msg: "Invalid Short URL"
+    })
+  }
+  return res.status(200).json({
+    totalClicks: result.visitHistory.length,
+    analytics: result.visitHistory
+  })
+}
+
 module.exports = {
   handleGenerateShortURL,
+  handleRedirectRoute,
+  handleAnalytics
 };
