@@ -23,8 +23,8 @@ const UrlShortner = () => {
       url: ShortURL_API.Create_ShortURL,
       bodyData: { longURL }
     })
-    setShortURL(BASE_URL + '/url/' + response.data.shortURL)
-    console.log(BASE_URL + '/url/' + response.data.shortURL)
+    setShortURL(BASE_URL + '/' + response.data.shortURL)
+    // console.log(BASE_URL + '/url/' + response.data.shortURL)
   };
 
   const copyToClipboard = () => {

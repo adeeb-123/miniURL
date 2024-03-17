@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(cors());
 
-app.use("/url", urlRoute);
+app.use("/", urlRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
