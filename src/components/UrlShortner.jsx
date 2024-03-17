@@ -4,6 +4,7 @@ import copy from "copy-to-clipboard";
 import axios from "axios";
 import { apiConnector } from "../utils/apiConnector";
 import { BASE_URL, ShortURL_API } from "../utils/apis"
+import { TailSpin } from "react-loader-spinner";
 
 const UrlShortner = () => {
   const textRef = useRef();
@@ -11,6 +12,7 @@ const UrlShortner = () => {
   // state for short url
   const [shortURL, setShortURL] = useState("");
   const [longURL, setLongURL] = useState("");
+  const [loading, setLoading] = useState(false)
 
   // function to shorten-url
   const shortenUrl = async () => {
@@ -18,13 +20,20 @@ const UrlShortner = () => {
       toast.error("It Can't be Empty")
       return;
     }
-    const response = await apiConnector({
-      method: 'POST',
-      url: ShortURL_API.Create_ShortURL,
-      bodyData: { longURL }
-    })
-    setShortURL(BASE_URL + '/' + response.data.shortURL)
-    // console.log(BASE_URL + '/url/' + response.data.shortURL)
+    try {
+      setLoading(true)
+
+      const response = await apiConnector({
+        method: 'POST',
+        url: ShortURL_API.Create_ShortURL,
+        bodyData: { longURL }
+      })
+
+      setLoading(false)
+      setShortURL(BASE_URL + '/' + response.data.shortURL)
+    } catch (error) {
+      toast.error("Something went wrong")
+    }
   };
 
   const copyToClipboard = () => {
@@ -56,9 +65,13 @@ const UrlShortner = () => {
       {/* short url div */}
       {shortURL != "" ? (
         <div className="mt-8 flex items-center justify-between gap-4 px-4 py-2">
-          <p className="border py-4 px-8 rounded-lg" ref={textRef}>
-            {shortURL}
-          </p>
+          {
+            loading ? (<div className="w-[50px]">
+              <TailSpin color="green" radius={"2px"} />
+            </div>) : (<p className="border py-4 px-8 rounded-lg" ref={textRef}>
+              {shortURL}
+            </p>)
+          }
 
           <button
             onClick={copyToClipboard}
