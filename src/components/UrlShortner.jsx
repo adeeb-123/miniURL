@@ -16,13 +16,13 @@ const UrlShortner = () => {
 
   // function to shorten-url
   const shortenUrl = async () => {
-    if (longURL === "") {
-      toast.error("It Can't be Empty")
-      return;
-    }
+    setShortURL('')
     try {
       setLoading(true)
-
+      if (longURL === "") {
+        toast.error("It Can't be Empty")
+        return;
+      }
       const response = await apiConnector({
         method: 'POST',
         url: ShortURL_API.Create_ShortURL,
@@ -62,16 +62,20 @@ const UrlShortner = () => {
         </button>
       </div>
 
+      {/* handle the loader */}
+      {
+        loading ? (<div className="w-[50px]">
+          <TailSpin color="green" radius={"2px"} />
+        </div>) : (<></>)
+      }
+
       {/* short url div */}
       {shortURL != "" ? (
         <div className="mt-8 flex items-center justify-between gap-4 px-4 py-2">
-          {
-            loading ? (<div className="w-[50px]">
-              <TailSpin color="green" radius={"2px"} />
-            </div>) : (<p className="border py-4 px-8 rounded-lg" ref={textRef}>
-              {shortURL}
-            </p>)
-          }
+
+          <p className="border py-4 px-8 rounded-lg" ref={textRef}>
+            {shortURL}
+          </p>
 
           <button
             onClick={copyToClipboard}
