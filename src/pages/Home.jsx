@@ -10,6 +10,18 @@ const Home = () => {
         <UrlShortner />
       </div>
     </div>
+
+    // <div className="w-[100vw] h-screen bg-[#ebe2f8]">
+    //   <div className="w-[90%] max-w-[1400px] mx-auto h-full flex flex-col items-center gap-6 border">
+    //     <div className="border border-red-600 text-center py-2 px-4 space-y-2">
+    //       <h2 className="font-[Preahvihear] text-3xl md:text-4xl lg:text-5xl">Free URL <span className="text-[#4f228d]">Shortner</span></h2>
+    //       <p className="font-[Preahvihear] text-sm">Create shorter URLs with miniURL</p>
+    //     </div>
+    //     <div className="border border-red-500 w-fit h-fit">
+    //       form
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 
