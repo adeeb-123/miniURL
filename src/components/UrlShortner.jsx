@@ -37,18 +37,18 @@ const UrlShortner = () => {
   };
 
   const copyToClipboard = () => {
-    let copyText = textRef?.current?.innerText;
+    let copyText = textRef?.current?.value;
     let isCopy = copy(copyText);
     if (isCopy) {
       toast.success("Copied to Clipboard");
     }
   };
   return (
-    <div className="w-[100%] md:w-[50%] font-[Poppins] flex flex-col items-center">
-      <div className="md:w-[100%] flex gap-4 md:flex-row flex-col items-center">
+    <div className="w-[100%] font-[Preahvihear] flex flex-col items-center px-8 py-12 bg-[#1a0b2e] min-h-[200px] rounded-2xl shadow-2xl">
+      <div className="w-[100%] flex gap-4 flex-col items-center">
         <input
           type="text"
-          className="w-[100%] px-4 py-2 text-black"
+          className="w-[100%] p-3 text-black font-extrabold bg-[#e1d2f4] rounded-lg"
           onChange={(e) => setLongURL(e.target.value)}
           value={longURL}
         />
@@ -56,7 +56,7 @@ const UrlShortner = () => {
           onClick={() => {
             shortenUrl();
           }}
-          className="bg-blue-500 text-white rounded-lg px-4 py-2"
+          className="bg-[#4f228d] text-white rounded-lg px-4 py-2 w-[70%] min-w-fit mx-auto cursor-pointer hover:scale-[1.04] hover:shadow-2xl duration-700 transition-all"
         >
           Shorten URL
         </button>
@@ -71,15 +71,22 @@ const UrlShortner = () => {
 
       {/* short url div */}
       {shortURL != "" ? (
-        <div className="mt-8 flex items-center justify-between gap-4 px-4 py-2">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 px-4 py-2 w-[100%]">
 
-          <p className="border py-4 px-8 rounded-lg" ref={textRef}>
+          {/* <p className="p-4 rounded-lg bg-[#e1d2f4] text-black font-extrabold" ref={textRef}>
             {shortURL}
-          </p>
+          </p> */}
+
+          <input
+            type="text"
+            className="w-[60%] p-4 rounded-lg bg-[#e1d2f4] text-black font-extrabold"
+            ref={textRef}
+            value={shortURL}
+          />
 
           <button
             onClick={copyToClipboard}
-            className="bg-blue-500 text-white px-2 py-2 rounded-2xl text-sm"
+            className="bg-[#4f228d] text-white px-2 py-2 rounded-lg text-sm w-[20%] min-w-fit hover:scale-[1.04] hover:shadow-2xl duration-700 transition-all"
           >
             Copy URL
           </button>
