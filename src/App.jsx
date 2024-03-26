@@ -3,9 +3,9 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Home from "./pages/Home";
-import Navbar from "./components/Global/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Analytics from "./pages/Analytics";
+import Navbar from "./components/Global/Navbar";
 
 function App() {
   const [count, setCount] = useState(0);
