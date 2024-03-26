@@ -65,7 +65,7 @@ const UrlShortner = () => {
       {/* handle the loader */}
       {
         loading ? (<div className="w-[50px]">
-          <TailSpin color="green" radius={"2px"} />
+          <TailSpin color="#e1d2f4" radius={"2px"} />
         </div>) : (<></>)
       }
 
