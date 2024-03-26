@@ -5,7 +5,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Analytics from "./pages/Analytics";
-import Navbar from "./components/Global/Navbar";
+import Navbar from './components/global/Navbar'
 
 function App() {
   const [count, setCount] = useState(0);
