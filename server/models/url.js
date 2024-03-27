@@ -16,6 +16,12 @@ const urlSchema = new mongoose.Schema(
         timestamp: { type: Number },
       },
     ],
+    visitorsCountry: [
+      {
+        type: String,
+        unique: true
+      }
+    ]
   },
   { timestamps: true }
 );

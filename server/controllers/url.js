@@ -23,7 +23,7 @@ async function handleGenerateShortURL(req, res) {
 
     if (data.country_code) {
       country = data.country_code
-      console.log('country' , country)
+      console.log('country', country)
     } else {
       country = 'Country information not available'
     }
@@ -42,6 +42,7 @@ async function handleGenerateShortURL(req, res) {
     shortId: shortID,
     redirectURL: body.longURL,
     visitHistory: [],
+    visitorsCountry: country
   });
 
   return res.status(200).json({
