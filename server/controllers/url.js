@@ -62,6 +62,7 @@ async function handleRedirectRoute(req, res) {
       $push: {
         visitHistory: {
           timestamp: Date.now(),
+          country : country
         },
       },
       $addToSet: {
