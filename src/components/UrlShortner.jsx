@@ -5,6 +5,9 @@ import axios from "axios";
 import { apiConnector } from "../utils/apiConnector";
 import { BASE_URL, ShortURL_API } from "../utils/apis"
 import { TailSpin } from "react-loader-spinner";
+// import { QRCodeSVG } from 'qrcode.react';
+import QRCode from 'qrcode.react';
+import { IoCloudDownload } from "react-icons/io5";
 
 const UrlShortner = () => {
   const textRef = useRef();
@@ -13,6 +16,22 @@ const UrlShortner = () => {
   const [shortURL, setShortURL] = useState("");
   const [longURL, setLongURL] = useState("");
   const [loading, setLoading] = useState(false)
+
+  // qr status
+  const [genQR, setGenQR] = useState(false)
+
+  const downloadQRCode = () => {
+    const qrCodeURL = document.getElementById('qrCodeEl')
+      .toDataURL("image/png")
+      .replace("image/png", "image/octet-stream");
+    console.log(qrCodeURL)
+    let aEl = document.createElement("a");
+    aEl.href = qrCodeURL;
+    aEl.download = "QR_Code.png";
+    document.body.appendChild(aEl);
+    aEl.click();
+    document.body.removeChild(aEl);
+  }
 
   // function to shorten-url
   const shortenUrl = async () => {
@@ -51,6 +70,7 @@ const UrlShortner = () => {
           className="w-[100%] p-3 text-black font-extrabold bg-[#e1d2f4] rounded-lg"
           onChange={(e) => setLongURL(e.target.value)}
           value={longURL}
+          placeholder="Enter your long Url"
         />
         <button
           onClick={() => {
@@ -77,12 +97,22 @@ const UrlShortner = () => {
             {shortURL}
           </p> */}
 
-          <input
-            type="text"
-            className="w-[60%] p-4 rounded-lg bg-[#e1d2f4] text-black font-extrabold"
-            ref={textRef}
-            value={shortURL}
-          />
+          <div className="w-[60%] font-extrabold flex flex-col lg:flex-row gap-4 items-center justify-between">
+            <input
+              type="text"
+              className="w-[100%] p-4 rounded-lg bg-[#e1d2f4] text-black "
+              ref={textRef}
+              value={shortURL}
+            />
+            {
+              genQR ? (
+                <div className="relative pr-8">
+                  <QRCode id="qrCodeEl" value={shortURL} bgColor="#1a0b2e" fgColor="#FFFFFF" size={'64'} />
+                  <IoCloudDownload className="text-white text-lg absolute top-0 right-0 cursor-pointer duration-200 transition-all hover:scale-[1.5]" onClick={downloadQRCode} />
+                </div>
+              ) : (<p className="text-white min-w-fit cursor-pointer hover:underline" onClick={() => setGenQR(true)}>Generate QR</p>)
+            }
+          </div>
 
           <button
             onClick={copyToClipboard}
@@ -90,6 +120,7 @@ const UrlShortner = () => {
           >
             Copy URL
           </button>
+
         </div>
       ) : (
         <></>

@@ -7,7 +7,7 @@ import { FaSquareXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
     return (
-        <div className='w-[100%] py-4'>
+        <div className='w-[100%] py-4 bg-[#ebe2f8]'>
             <div className='w-[80%] max-w-[1400px] mx-auto flex max-sm:flex-col max-sm:gap-2 justify-between items-center '>
                 <div className='font-[Preahvihear] text-sm flex items-center gap-2'>
                     <FaRegCopyright />
