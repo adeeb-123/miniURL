@@ -2,10 +2,19 @@ const shortid = require("shortid");
 const URL = require("../models/url");
 const axios = require("axios");
 
+function getClientIp(req) {
+  const xForwardedFor = req.headers['x-forwarded-for'];
+  if (xForwardedFor) {
+    const ips = xForwardedFor.split(', ');
+    return ips[0];
+  }
+  return req.connection.remoteAddress;
+}
+
 async function handleGenerateShortURL(req, res) {
   const body = req.body;
 
-  const ipAddress = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ipAddress = getClientIp(req);
   let country = '';
 
   try {
@@ -13,7 +22,7 @@ async function handleGenerateShortURL(req, res) {
     const data = response.data;
 
     if (data.country_code) {
-      country = data.country_name
+      country = data.country_code
       console.log('country' , country)
     } else {
       country = 'Country information not available'
