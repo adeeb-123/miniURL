@@ -7,6 +7,7 @@ async function handleGenerateShortURL(req, res) {
 
   const ipAddress = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   let country = '';
+  
   try {
     const response = await axios.get(`https://freegeoip.app/json/${ipAddress}`);
     const data = response.data;
