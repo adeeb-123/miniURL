@@ -63,10 +63,8 @@ async function handleRedirectRoute(req, res) {
         visitHistory: {
           timestamp: Date.now(),
         },
+        visitorsCountry: country,
       },
-      $push : {
-        visitorsCountry : country
-      }
     }
   );
   if (!entry) {
