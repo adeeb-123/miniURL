@@ -14,23 +14,6 @@ function getClientIp(req) {
 async function handleGenerateShortURL(req, res) {
   const body = req.body;
 
-  const ipAddress = getClientIp(req);
-  let country = '';
-
-  try {
-    const response = await axios.get(`https://freegeoip.app/json/${ipAddress}`);
-    const data = response.data;
-
-    if (data.country_code) {
-      country = data.country_code
-      console.log('country', country)
-    } else {
-      country = 'Country information not available'
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
   if (!body.longURL) {
     return res.status(400).json({
       msg: "URL is required",
@@ -42,18 +25,34 @@ async function handleGenerateShortURL(req, res) {
     shortId: shortID,
     redirectURL: body.longURL,
     visitHistory: [],
-    visitorsCountry: country
+    visitorsCountry: []
   });
 
   return res.status(200).json({
     msg: "Short URL created successfully",
     shortURL: shortID,
-    countryName: country,
-    ip: ipAddress,
   });
 }
 
 async function handleRedirectRoute(req, res) {
+
+  // Logic of ipConfigurations
+  const ipAddress = getClientIp(req);
+  let country = '';
+
+  try {
+    const response = await axios.get(`https://freegeoip.app/json/${ipAddress}`);
+    const data = response.data;
+
+    if (data.country_code) {
+      country = data.country_code
+    } else {
+      country = 'Country information not available'
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
     {
@@ -65,6 +64,9 @@ async function handleRedirectRoute(req, res) {
           timestamp: Date.now(),
         },
       },
+      $push : {
+        visitorsCountry : country
+      }
     }
   );
   if (!entry) {
