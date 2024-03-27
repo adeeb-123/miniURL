@@ -6,6 +6,7 @@ async function handleGenerateShortURL(req, res) {
   const body = req.body;
 
   const ipAddress = req.ip;
+  let country = '';
 
   // Make a request to ipinfo.io to get geolocation data
   try {
@@ -15,6 +16,7 @@ async function handleGenerateShortURL(req, res) {
     const data = response.data;
 
     console.log(data); // Log the data received
+    country = data.country
   } catch (error) {
     console.error(error); // Log the error
   }
@@ -35,6 +37,7 @@ async function handleGenerateShortURL(req, res) {
   return res.status(200).json({
     msg: "Short URL created successfully",
     shortURL: shortID,
+    countryName : country
   });
 }
 
