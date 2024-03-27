@@ -5,20 +5,21 @@ const axios = require("axios");
 async function handleGenerateShortURL(req, res) {
   const body = req.body;
 
-  const ipAddress = req.ip;
+  const ipAddress = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   let country = '';
-
-  // Make a request to ipinfo.io to get geolocation data
   try {
-    const response = await axios.get(
-      `https://ipinfo.io/${ipAddress}?token=f74b9f9f449d65`
-    );
+    const response = await axios.get(`https://freegeoip.app/json/${ipAddress}`);
     const data = response.data;
 
-    console.log(data); // Log the data received
-    country = data.country
+    if (data.country_code) {
+      country = data.country_name
+      console.log('country' , country)
+    } else {
+      country = 'Country information not available'
+    }
   } catch (error) {
-    console.error(error); // Log the error
+    console.error(error);
+    res.status(500).send("Error retrieving geolocation data");
   }
 
   if (!body.longURL) {
@@ -37,7 +38,8 @@ async function handleGenerateShortURL(req, res) {
   return res.status(200).json({
     msg: "Short URL created successfully",
     shortURL: shortID,
-    countryName : country
+    countryName: country,
+    ip: ipAddress,
   });
 }
 
