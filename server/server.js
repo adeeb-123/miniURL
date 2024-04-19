@@ -12,7 +12,9 @@ connectToDB().then(() => console.log("MongoDB Connected"));
 
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 
 app.use("/", urlRoute);
 
