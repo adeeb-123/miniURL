@@ -20,7 +20,6 @@ const urlSchema = new mongoose.Schema(
     visitorsCountry: [
       {
         type: String,
-        unique: true
       }
     ]
   },

@@ -21,28 +21,38 @@ async function handleGenerateShortURL(req, res) {
   }
 
   const shortID = shortid();
-  await URL.create({
-    shortId: shortID,
-    redirectURL: body.longURL,
-    visitHistory: [],
-    visitorsCountry: []
-  });
+  try {
+    await URL.create({
+      shortId: shortID,
+      redirectURL: body.longURL,
+      visitHistory: [],
+      visitorsCountry: []
+    });
 
-  return res.status(200).json({
-    msg: "Short URL created successfully",
-    shortURL: shortID,
-  });
+    return res.status(200).json({
+      msg: "Short URL created successfully",
+      shortURL: shortID,
+    });
+  } catch (error) {
+    console.error("Error creating short URL:", error);
+    return res.status(500).json({
+      msg: "Internal server error",
+    });
+
+  }
 }
 
 async function handleRedirectRoute(req, res) {
 
   // Logic of ipConfigurations
   const ipAddress = getClientIp(req);
+  console.log('ipAddress' , ipAddress)
   let country = '';
 
   try {
     const response = await axios.get(`https://freegeoip.app/json/${ipAddress}`);
     const data = response.data;
+    console.log('data' , data)
 
     if (data.country_code) {
       country = data.country_code
@@ -62,7 +72,7 @@ async function handleRedirectRoute(req, res) {
       $push: {
         visitHistory: {
           timestamp: Date.now(),
-          country : country
+          country: country
         },
       },
       $addToSet: {

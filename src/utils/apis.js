@@ -1,5 +1,5 @@
-// export const BASE_URL = 'http://localhost:8001'
-export const BASE_URL = 'https://miniurl-hpr6.onrender.com'
+export const BASE_URL = 'http://localhost:8001'
+// export const BASE_URL = 'https://miniurl-hpr6.onrender.com'
 
 
 export const ShortURL_API = {
