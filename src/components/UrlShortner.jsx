@@ -52,6 +52,7 @@ const UrlShortner = () => {
       setShortURL(BASE_URL + '/' + response.data.shortURL)
     } catch (error) {
       toast.error("Something went wrong")
+      toast.error("Error ->" , error)
     }
   };
 
